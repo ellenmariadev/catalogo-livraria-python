@@ -1,69 +1,39 @@
 from utils import opcao_voltar
+from utils import arquivo
+from utils import validar_input_int
+from utils import validar_input_str
 
 
-def cadastrar_livro(arquivo):
+def cadastrar_livro():
     with open(arquivo, 'r', encoding="utf-8") as arquivos:
-        catalogo = arquivos.readlines() # Retorna os livros no formato de uma lista de strings.
+        # Retorna os livros no formato de uma lista de strings.
+        catalogo = arquivos.readlines()
+
+    print(f'\n\033[100m 7 \033[m \033[97mVoltar\033[m\n')
 
     while True:
-        print(f'\n\033[100m 7 \033[m \033[97mVoltar\033[m\n')
-        titulo = input("◌ Insira o título do livro: ")
-        if opcao_voltar(titulo):
-            return
         _isbn = input("◌ Insira o ISBN do livro: ")
         if opcao_voltar(_isbn):
             return
         if len(_isbn) == 13 and _isbn.isdigit():
             # Retorna True se houver um mesmo ISBN em alguma linha da lista de livros.
-            if any(linha.split(',')[1] == _isbn for linha in catalogo): 
+            if any(linha.split(',')[1] == _isbn for linha in catalogo):
                 print('\033[31mEsse livro já está cadastrado no sistema.\033[m')
             else:
                 break
         else:
             print('\033[31mO ISBN deve ter exatamente 13 dígitos e conter apenas números.\033[m')
+   
+    titulo = validar_input_str("◌ Insira o título do livro: ", opcao_voltar)
+    autor = validar_input_str("◌ Insira o autor do livro: ", opcao_voltar)
+    editora = validar_input_str("◌ Insira a editora do livro: ", opcao_voltar)
+    idioma = validar_input_str("◌ Insira o idioma do livro: ", opcao_voltar)
 
-    autor = input("◌ Insira o autor do livro: ")
-    if opcao_voltar(autor):
-        return
-    editora = input("◌ Insira a editora do livro: ")
-    if opcao_voltar(editora):
-        return
+    paginas = validar_input_int("◌ Insira o número de páginas totais do livro: ", opcao_voltar)
+    classificacao = validar_input_int("◌ Insira a classificação etária do livro: ", opcao_voltar)
+    anopublicacao = validar_input_int("◌ Insira o ano de publicação do livro: ", opcao_voltar)
 
-    while True:
-        try:
-            _paginas = int(input("◌ Insira o número de páginas totais do livro: "))
-            if opcao_voltar(str(_paginas)):
-                return
-            paginas = _paginas
-            break
-        except ValueError:
-            print('\033[31mDigite apenas números.\033[m')
-
-    idioma = input("◌ Insira o idioma do livro: ")
-    if opcao_voltar(idioma):
-        return
-
-    while True:
-        try:
-            _classificacao = int(input("◌ Insira a classificação etária do livro: "))
-            if opcao_voltar(str(_classificacao)):
-                return
-            classificacao = _classificacao
-            break
-        except ValueError:
-            print('\033[31mDigite apenas números.\033[m')
-
-    while True:
-        try:
-            _anopublicacao = int(input("◌ Insira o ano de publicação do livro: "))
-            if opcao_voltar(str(_anopublicacao)):
-                return
-            anopublicacao = _anopublicacao
-            break
-        except ValueError:
-            print('\033[31mDigite apenas números.\033[m')
-
-    livro = (f"{len(catalogo)},{isbn},{titulo},{autor},{editora},{paginas},{idioma},{classificacao},{anopublicacao}\n")
+    livro = (f"{len(catalogo)},{_isbn},{titulo},{autor},{editora},{paginas},{idioma},{classificacao},{anopublicacao}\n")
 
     catalogo.append(livro)
 
@@ -71,4 +41,3 @@ def cadastrar_livro(arquivo):
         arquivos.writelines(catalogo)
 
     print(f"\n\033[32mLivro [{titulo}] cadastrado.\033[m\n")
-

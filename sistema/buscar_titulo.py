@@ -1,10 +1,11 @@
 from utils import opcao_voltar
 from utils import print_livro
-
+from utils import arquivo
+from utils import dados
 # TODO: Lidar com os acentos no termo de busca.
 
 
-def buscar_titulo(arquivo, dados):
+def buscar_titulo():
     while True:
         print(f'\n\033[100m 7 \033[m \033[97mVoltar\033[m\n')
         _titulo = str(input("> Digite o título do livro: ").lower())

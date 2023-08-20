@@ -1,7 +1,11 @@
 from utils import opcao_voltar
+from utils import arquivo
+from utils import dados
+from utils import validar_input_int
+from utils import validar_input_str
 
 
-def editar_livro(arquivo, dados):
+def editar_livro():
     with open(arquivo, 'r', encoding="utf-8") as file:
         livros_lista = file.readlines()
 
@@ -20,65 +24,17 @@ def editar_livro(arquivo, dados):
 
             if livros["isbn"] == _isbn:
                 finder = True
-                titulo = input("Altere o título do livro: ")
-                if (opcao_voltar(titulo)):
-                    return
 
-                while True:
-                    isbn = input("Altere o ISBN do livro: ")
-                    if opcao_voltar(isbn):
-                        return
-                    if len(isbn) == 13 and isbn.isdigit():
-                        break
-                    else:
-                        print(
-                            '\033[31mO ISBN deve ter exatamente 13 dígitos e conter apenas números.\033[m')
-
-                autor = input("Altere o autor do livro: ")
-                if (opcao_voltar(autor)):
-                    return
-                editora = input("Altere a editora do livro: ")
-                if (opcao_voltar(editora)):
-                    return
-
-                while True:
-                    try:
-                        _paginas = int(
-                            input("Altere o número de páginas totais do livro: "))
-                        if (opcao_voltar(_paginas)):
-                            return
-                        paginas = _paginas
-                        break
-                    except ValueError:
-                        print('\033[31mDigite apenas números.\033[m')
-
-                idioma = input("Altere o idioma do livro: ")
-                if (opcao_voltar(idioma)):
-                    break
-
-                while True:
-                    try:
-                        _classificacao = int(
-                            input("Altere a classificação etária do livro: "))
-                        if (opcao_voltar(str(_classificacao))):
-                            return
-                        classificacao = _classificacao
-                        break
-                    except ValueError:
-                        print('\033[31mDigite apenas números.\033[m')
-
-                while True:
-                    try:
-                        _anopublicacao = int(
-                            input("Altere o ano de publicação do livro: "))
-                        if (opcao_voltar(str(_anopublicacao))):
-                            return
-                        anopublicacao = _anopublicacao
-                        break
-                    except ValueError:
-                        print('\033[31mDigite apenas números.\033[m')
-
-                livros["isbn"] = isbn
+                titulo = validar_input_str("◌ Altere o título do livro: ", opcao_voltar)
+                autor = validar_input_str("◌ Altere o autor do livro: ", opcao_voltar)
+                editora = validar_input_str("◌ Altere a editora do livro: ", opcao_voltar)
+                idioma = validar_input_str("◌ Altere o idioma do livro: ", opcao_voltar)
+    
+                paginas = validar_input_int("◌ Altere o número de páginas totais do livro: ", opcao_voltar)
+                classificacao = validar_input_int("◌ Altere a classificação etária do livro: ", opcao_voltar)
+                anopublicacao = validar_input_int("◌ Altere o ano de publicação do livro: ", opcao_voltar)
+    
+                livros["isbn"] = _isbn
                 livros["titulo"] = titulo
                 livros["autor"] = autor
                 livros["editora"] = editora
@@ -98,5 +54,4 @@ def editar_livro(arquivo, dados):
                 break
 
         if not finder:
-            print(
-                "\033[31mEsse livro não existe no catálogo, verifique se o ISBN está correto.\033[m")
+            print("\033[31mEsse livro não existe no catálogo, verifique se o ISBN está correto.\033[m")

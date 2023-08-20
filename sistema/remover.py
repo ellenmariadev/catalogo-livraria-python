@@ -1,8 +1,10 @@
 from utils import opcao_voltar
 from utils import print_livro
+from utils import arquivo
+from utils import dados
 
 
-def remover_livro(arquivo, dados):
+def remover_livro():
     while True:
         print(f'\n\033[100m 7 \033[m \033[97mVoltar\033[m\n')
         _isbn = input("> Informe o ISBN do livro: ").lower()
@@ -11,10 +13,10 @@ def remover_livro(arquivo, dados):
         if opcao_voltar(_isbn):
             break
 
-        with open(arquivo, 'r') as arquivos:
+        with open(arquivo, 'r', encoding="utf-8") as arquivos:
             arsenal = arquivos.readlines()
 
-        with open(arquivo, 'w') as arquivos:
+        with open(arquivo, 'w', encoding="utf-8") as arquivos:
             for livro in arsenal:
                 propriedade = livro.strip().split(",")
                 livros = dados(propriedade)
